@@ -13,8 +13,8 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[allow(unused_imports)]
 use crate::state::{
-    AgentInfo, AgentSelection, Annotation, AnnotationEntry, AppendableResponsePart, Changeset,
-    ChangesetFile, ChangesetOperation, ChangesetOperationStatus, ChangesetStatus, ChatInputAnswer,
+    AgentInfo, AgentSelection, Annotation, AnnotationEntry, Changeset, ChangesetFile,
+    ChangesetOperation, ChangesetOperationStatus, ChangesetStatus, ChatInputAnswer,
     ChatInputRequest, ChatInputResponseKind, ChatInteractivity, ChatOrigin, ChatSummary,
     ConfirmationOption, ContentRef, Customization, ErrorInfo, ErrorResponsePart,
     McpAuthRequirement, McpServerState, Message, ModelSelection, PendingMessageKind, ResponsePart,
@@ -388,8 +388,8 @@ pub struct ChatDeltaAction {
 pub struct ChatResponsePartAction {
     /// Turn identifier
     pub turn_id: String,
-    /// Non-error response part to append.
-    pub part: AppendableResponsePart,
+    /// Response part to append; error parts are ignored.
+    pub part: ResponsePart,
     /// Additional provider-specific metadata for this action.
     ///
     /// Clients MAY look for well-known keys here to provide enhanced UI, and

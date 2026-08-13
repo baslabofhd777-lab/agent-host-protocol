@@ -5517,13 +5517,27 @@
     "ResponsePart": {
       "oneOf": [
         {
-          "$ref": "#/$defs/AppendableResponsePart"
+          "$ref": "#/$defs/MarkdownResponsePart"
+        },
+        {
+          "$ref": "#/$defs/ResourceResponsePart"
+        },
+        {
+          "$ref": "#/$defs/ToolCallResponsePart"
+        },
+        {
+          "$ref": "#/$defs/ReasoningResponsePart"
+        },
+        {
+          "$ref": "#/$defs/SystemNotificationResponsePart"
+        },
+        {
+          "$ref": "#/$defs/InputRequestResponsePart"
         },
         {
           "$ref": "#/$defs/ErrorResponsePart"
         }
-      ],
-      "description": "Any durable part of a turn's response stream."
+      ]
     },
     "TurnState": {
       "enum": [
@@ -5737,29 +5751,6 @@
       ],
       "type": "string",
       "description": "Discriminant for {@link ResourceChange.type}."
-    },
-    "AppendableResponsePart": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/MarkdownResponsePart"
-        },
-        {
-          "$ref": "#/$defs/ResourceResponsePart"
-        },
-        {
-          "$ref": "#/$defs/ToolCallResponsePart"
-        },
-        {
-          "$ref": "#/$defs/ReasoningResponsePart"
-        },
-        {
-          "$ref": "#/$defs/SystemNotificationResponsePart"
-        },
-        {
-          "$ref": "#/$defs/InputRequestResponsePart"
-        }
-      ],
-      "description": "A response part that may be appended while a turn is active with\n`chat/responsePart`.\n\nErrors are excluded because they must be appended atomically with the\nterminal `chat/error` transition."
     }
   }
 }

@@ -265,8 +265,8 @@ type ChatResponsePartAction struct {
 	Type ActionType `json:"type"`
 	// Turn identifier
 	TurnId string `json:"turnId"`
-	// Non-error response part to append.
-	Part AppendableResponsePart `json:"part"`
+	// Response part to append; error parts are ignored.
+	Part ResponsePart `json:"part"`
 	// Additional provider-specific metadata for this action.
 	//
 	// Clients MAY look for well-known keys here to provide enhanced UI, and

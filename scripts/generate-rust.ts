@@ -821,10 +821,10 @@ const STATE_STRUCTS: { name: string; omitDiscriminants?: boolean; rustName?: str
   { name: 'ResourceChange' },
 ];
 
-const APPENDABLE_RESPONSE_PART_UNION: UnionConfig = {
-  name: 'AppendableResponsePart',
+const RESPONSE_PART_UNION: UnionConfig = {
+  name: 'ResponsePart',
   discriminantField: 'kind',
-  doc: 'A non-error part that may be appended while a turn is active.',
+  doc: 'A single part of a response stream (text, tool call, reasoning, content reference).',
   variants: [
     { variantName: 'Markdown', innerType: 'MarkdownResponsePart', wireValue: 'markdown' },
     { variantName: 'ContentRef', innerType: 'ResourceResponsePart', wireValue: 'contentRef' },
@@ -832,16 +832,6 @@ const APPENDABLE_RESPONSE_PART_UNION: UnionConfig = {
     { variantName: 'Reasoning', innerType: 'ReasoningResponsePart', wireValue: 'reasoning' },
     { variantName: 'SystemNotification', innerType: 'SystemNotificationResponsePart', wireValue: 'systemNotification' },
     { variantName: 'InputRequest', innerType: 'InputRequestResponsePart', wireValue: 'inputRequest' },
-  ],
-  unknown: true,
-};
-
-const RESPONSE_PART_UNION: UnionConfig = {
-  name: 'ResponsePart',
-  discriminantField: 'kind',
-  doc: 'A single part of a response stream (text, tool call, reasoning, content reference).',
-  variants: [
-    ...APPENDABLE_RESPONSE_PART_UNION.variants,
     { variantName: 'Error', innerType: 'ErrorResponsePart', wireValue: 'error' },
   ],
   unknown: true,
@@ -1175,8 +1165,6 @@ function generateStateFile(project: Project): string {
   lines.push('// ─── Discriminated Unions ─────────────────────────────────────────────\n');
   lines.push(generateChatOrigin());
   lines.push('');
-  lines.push(generateDiscriminatedUnion(APPENDABLE_RESPONSE_PART_UNION));
-  lines.push('');
   lines.push(generateDiscriminatedUnion(RESPONSE_PART_UNION));
   lines.push('');
   lines.push(generateDiscriminatedUnion(TOOL_CALL_STATE_UNION));
@@ -1390,7 +1378,7 @@ impl Serialize for ChatErrorAction {
 function generateActionsFile(project: Project): string {
   const lines: string[] = [GENERATED_HEADER];
   lines.push('#[allow(unused_imports)]');
-  lines.push('use crate::state::{AgentInfo, AgentSelection, Annotation, AnnotationEntry, AppendableResponsePart, ChatInputAnswer, ChatInputRequest, ChatInputResponseKind, ChatInteractivity, ChatOrigin, ConfirmationOption, ContentRef, Customization, ErrorInfo, ErrorResponsePart, McpAuthRequirement, McpServerState, ModelSelection, ResponsePart, SessionActiveClient, SessionInputRequest, SideChatSelection, TerminalClaim, TerminalInfo, TextRange, ToolCallContributor, ToolCallResult, ToolCallRiskAssessment, ToolCallConfirmationReason, ToolCallCancellationReason, ToolDefinition, ToolInput, ToolResultContent, UsageInfo, Message, PendingMessageKind, Turn, ChangesetStatus, ChangesetFile, ChangesetOperation, ChangesetOperationStatus, Changeset, ChatSummary};');
+  lines.push('use crate::state::{AgentInfo, AgentSelection, Annotation, AnnotationEntry, ChatInputAnswer, ChatInputRequest, ChatInputResponseKind, ChatInteractivity, ChatOrigin, ConfirmationOption, ContentRef, Customization, ErrorInfo, ErrorResponsePart, McpAuthRequirement, McpServerState, ModelSelection, ResponsePart, SessionActiveClient, SessionInputRequest, SideChatSelection, TerminalClaim, TerminalInfo, TextRange, ToolCallContributor, ToolCallResult, ToolCallRiskAssessment, ToolCallConfirmationReason, ToolCallCancellationReason, ToolDefinition, ToolInput, ToolResultContent, UsageInfo, Message, PendingMessageKind, Turn, ChangesetStatus, ChangesetFile, ChangesetOperation, ChangesetOperationStatus, Changeset, ChatSummary};');
   lines.push('');
 
   // ActionType enum
@@ -1953,7 +1941,6 @@ function checkExhaustiveness(project: Project): void {
     'StateAction',
     'ActionEnvelope',
     'ActionOrigin',
-    'AppendableResponsePart',
     'ResponsePart',
     'ToolResultContent',
     'SessionToolCallApprovedAction',

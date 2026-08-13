@@ -751,8 +751,8 @@
           "description": "Turn identifier"
         },
         "part": {
-          "$ref": "#/$defs/AppendableResponsePart",
-          "description": "Non-error response part to append."
+          "$ref": "#/$defs/ResponsePart",
+          "description": "Response part to append; error parts are ignored."
         },
         "_meta": {
           "type": "object",
@@ -7408,7 +7408,7 @@
       ],
       "description": "An attachment associated with a {@link Message}."
     },
-    "AppendableResponsePart": {
+    "ResponsePart": {
       "oneOf": [
         {
           "$ref": "#/$defs/MarkdownResponsePart"
@@ -7427,20 +7427,11 @@
         },
         {
           "$ref": "#/$defs/InputRequestResponsePart"
-        }
-      ],
-      "description": "A response part that may be appended while a turn is active with\n`chat/responsePart`.\n\nErrors are excluded because they must be appended atomically with the\nterminal `chat/error` transition."
-    },
-    "ResponsePart": {
-      "oneOf": [
-        {
-          "$ref": "#/$defs/AppendableResponsePart"
         },
         {
           "$ref": "#/$defs/ErrorResponsePart"
         }
-      ],
-      "description": "Any durable part of a turn's response stream."
+      ]
     },
     "ToolCallRiskAssessment": {
       "oneOf": [

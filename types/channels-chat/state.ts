@@ -916,28 +916,16 @@ export interface ReasoningResponsePart {
 }
 
 /**
- * A response part that may be appended while a turn is active with
- * `chat/responsePart`.
- *
- * Errors are excluded because they must be appended atomically with the
- * terminal `chat/error` transition.
- *
  * @category Response Parts
  */
-export type AppendableResponsePart =
+export type ResponsePart =
   | MarkdownResponsePart
   | ResourceResponsePart
   | ToolCallResponsePart
   | ReasoningResponsePart
   | SystemNotificationResponsePart
-  | InputRequestResponsePart;
-
-/**
- * Any durable part of a turn's response stream.
- *
- * @category Response Parts
- */
-export type ResponsePart = AppendableResponsePart | ErrorResponsePart;
+  | InputRequestResponsePart
+  | ErrorResponsePart;
 
 /**
  * A live or resolved input request (elicitation) in the turn response stream.

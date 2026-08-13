@@ -961,8 +961,8 @@ const STATE_STRUCTS = [
   'ResourceWatchState', 'ResourceChange',
 ];
 
-const APPENDABLE_RESPONSE_PART_UNION: UnionConfig = {
-  name: 'AppendableResponsePart',
+const RESPONSE_PART_UNION: UnionConfig = {
+  name: 'ResponsePart',
   discriminantField: 'kind',
   variants: [
     { caseName: 'Markdown', structName: 'MarkdownResponsePart', discriminantValue: 'markdown' },
@@ -971,15 +971,6 @@ const APPENDABLE_RESPONSE_PART_UNION: UnionConfig = {
     { caseName: 'Reasoning', structName: 'ReasoningResponsePart', discriminantValue: 'reasoning' },
     { caseName: 'SystemNotification', structName: 'SystemNotificationResponsePart', discriminantValue: 'systemNotification' },
     { caseName: 'InputRequest', structName: 'InputRequestResponsePart', discriminantValue: 'inputRequest' },
-  ],
-  unknown: true,
-};
-
-const RESPONSE_PART_UNION: UnionConfig = {
-  name: 'ResponsePart',
-  discriminantField: 'kind',
-  variants: [
-    ...APPENDABLE_RESPONSE_PART_UNION.variants,
     { caseName: 'Error', structName: 'ErrorResponsePart', discriminantValue: 'error' },
   ],
   unknown: true,
@@ -1275,8 +1266,6 @@ function generateStateFile(project: Project): string {
   lines.push('// ─── Discriminated Unions ───────────────────────────────────────────────────');
   lines.push('');
   lines.push(generateChatOriginKotlin());
-  lines.push('');
-  lines.push(generateDiscriminatedUnion(APPENDABLE_RESPONSE_PART_UNION));
   lines.push('');
   lines.push(generateDiscriminatedUnion(RESPONSE_PART_UNION));
   lines.push('');
@@ -2094,7 +2083,6 @@ function checkExhaustiveness(project: Project): void {
     'StateAction',                  // StateAction enum in generateActionsFile()
     'ActionEnvelope',               // generateDataClassFromInterface() call in generateActionsFile()
     'ActionOrigin',                 // generateDataClassFromInterface() call in generateActionsFile()
-    'AppendableResponsePart',       // APPENDABLE_RESPONSE_PART_UNION discriminated union
     'ResponsePart',                 // RESPONSE_PART_UNION discriminated union
     'ToolResultContent',            // generateToolResultContentUnion()
     'SessionToolCallApprovedAction', // merged into SessionToolCallConfirmedAction

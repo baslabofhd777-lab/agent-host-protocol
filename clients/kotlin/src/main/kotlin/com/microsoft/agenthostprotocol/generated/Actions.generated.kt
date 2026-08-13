@@ -365,9 +365,9 @@ data class ChatResponsePartAction(
      */
     val turnId: String,
     /**
-     * Non-error response part to append.
+     * Response part to append; error parts are ignored.
      */
-    val part: AppendableResponsePart,
+    val part: ResponsePart,
     /**
      * Additional provider-specific metadata for this action.
      *
